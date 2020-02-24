@@ -9,6 +9,7 @@ require 'json'
 require 'vmstat'
 
 class LinuxHomebusApp < HomeBusApp
+  DDC = 'org.homebus.experimental.server-status'
 
   def initialize(options)
     @options = options
@@ -24,7 +25,7 @@ class LinuxHomebusApp < HomeBusApp
     @mount_points = (ENV['MOUNT_POINTS'] || '').split(/\s/)
   end
 
-  def get_memory
+  def _get_memory
     result = Hash.new
 
     memory = File.read('/proc/meminfo')
@@ -46,7 +47,7 @@ class LinuxHomebusApp < HomeBusApp
     result
   end
 
-  def get_filesystem(mount_point)
+  def _get_filesystem(mount_point)
     df = `df #{mount_point}`
 
     m = df.match /^(\S+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)%\s+(\W+)/
@@ -66,9 +67,9 @@ class LinuxHomebusApp < HomeBusApp
     }
   end
 
-  def get_filesystems
+  def _get_filesystems
     @mount_points.map do |mount|
-      get_filesystem mount
+      _get_filesystem mount
     end
   end
 
@@ -77,7 +78,10 @@ class LinuxHomebusApp < HomeBusApp
 
     answer =  {
       id: @uuid,
-      timestamp: Time.now.to_i,
+      timestamp: Time.now.to_i
+    }
+
+    answer[DDC] = {
       system: {
         uptime: (Time.now - vmstat.boot_time).to_i,
         version: File.read("/etc/issue.net").chomp!,
@@ -92,11 +96,8 @@ class LinuxHomebusApp < HomeBusApp
       },
       memory: get_memory
     }
-    pp answer
-    
-    @mqtt.publish '/homebus/device/' + @uuid,
-                  JSON.generate(answer),
-                  true
+
+    publish! DDC, answer
 
     sleep update_delay
   end
@@ -133,7 +134,7 @@ class LinuxHomebusApp < HomeBusApp
         index: 0,
         accuracy: 0,
         precision: 0,
-        wo_topics: [ 'org.homebus.system', 'org.homebus.load', 'org.homebus.filesystems', 'org.homebus.memory' ],
+        wo_topics: [ DDC ],
         ro_topics: [],
         rw_topics: []
       }
