@@ -88,7 +88,7 @@ class LinuxHomebusApp < HomeBusApp
         kernel_version: `uname -r`.chomp!,
         hostname: File.read('/etc/hostname').chomp!
       },
-      filesystems: get_filesystems,
+      filesystems: _get_filesystems,
       load: {
         one_minute: vmstat.load_average.one_minute,
         five_minutes: vmstat.load_average.five_minutes,
