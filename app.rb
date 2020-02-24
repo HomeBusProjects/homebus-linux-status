@@ -94,7 +94,7 @@ class LinuxHomebusApp < HomeBusApp
         five_minutes: vmstat.load_average.five_minutes,
         fifteen_minutes: vmstat.load_average.fifteen_minutes
       },
-      memory: get_memory
+      memory: _get_memory
     }
 
     if @options[:verbose]
