@@ -20,3 +20,7 @@ filesystem mount points. For instance:
 ```
 MOUNT_POINTS=/ /var/log /var/data
 ```
+
+## Data Published
+
+This program publishes the `org.homebus.experimental.server-status` DDC.
