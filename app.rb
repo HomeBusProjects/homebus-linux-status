@@ -97,6 +97,10 @@ class LinuxHomebusApp < HomeBusApp
       memory: get_memory
     }
 
+    if @options[:verbose]
+      pp answer
+    end
+
     publish! DDC, answer
 
     sleep update_delay
