@@ -95,7 +95,7 @@ class LinuxHomebusApp < HomeBusApp
 
     answer =  {
       source: @uuid,
-      timestamp: Time.now.to_i
+      timestamp: Time.now.to_i,
       contents: {
         ddc: DDC,
         payload: payload
