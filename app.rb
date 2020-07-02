@@ -76,12 +76,8 @@ class LinuxHomebusApp < HomeBusApp
   def work!
     vmstat = Vmstat.snapshot
 
-    answer =  {
-      id: @uuid,
-      timestamp: Time.now.to_i
-    }
 
-    answer[DDC] = {
+    payload  = {
       system: {
         uptime: (Time.now - vmstat.boot_time).to_i,
         version: File.read("/etc/issue.net").chomp!,
@@ -95,6 +91,15 @@ class LinuxHomebusApp < HomeBusApp
         fifteen_minutes: vmstat.load_average.fifteen_minutes
       },
       memory: _get_memory
+    }
+
+    answer =  {
+      source: @uuid,
+      timestamp: Time.now.to_i
+      contents: {
+        ddc: DDC,
+        payload: payload
+      }
     }
 
     if @options[:verbose]
