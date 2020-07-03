@@ -76,7 +76,6 @@ class LinuxHomebusApp < HomeBusApp
   def work!
     vmstat = Vmstat.snapshot
 
-
     payload  = {
       system: {
         uptime: (Time.now - vmstat.boot_time).to_i,
@@ -93,20 +92,11 @@ class LinuxHomebusApp < HomeBusApp
       memory: _get_memory
     }
 
-    answer =  {
-      source: @uuid,
-      timestamp: Time.now.to_i,
-      contents: {
-        ddc: DDC,
-        payload: payload
-      }
-    }
-
     if @options[:verbose]
-      pp answer
+      pp payload
     end
 
-    publish! DDC, answer
+    publish! DDC, payload
 
     sleep update_delay
   end
