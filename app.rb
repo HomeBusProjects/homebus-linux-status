@@ -36,13 +36,15 @@ class LinuxHomebusApp < HomeBusApp
 
     m = memory.match /MemFree:\s+(\d+) kB/
     if m
-      result[:free] = m[1].to_i
+      result[:free] = m[1].to_i*1024
     end
 
     m = memory.match /MemAvailable:\s+(\d+) kB/
     if m
-      result[:available] = m[1].to_i
+      result[:available] = m[1].to_i*1024
     end
+
+    result[:in_bytes] = true
 
     result
   end
@@ -63,6 +65,9 @@ class LinuxHomebusApp < HomeBusApp
       total_blocks: total_blocks,
       available_blocks: available_blocks,
       free_blocks: free_blocks,
+      total_bytes: total_blocks*1024,
+      available_bytes: available_bytes*1024,
+      free_bytes: free_bytes*1024,
       used_percentage: used_percentage
     }
   end
