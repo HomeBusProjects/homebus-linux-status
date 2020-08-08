@@ -31,7 +31,7 @@ class LinuxHomebusApp < HomeBusApp
     memory = File.read('/proc/meminfo')
     m = memory.match /MemTotal:\s+(\d+) kB/
     if m
-      result[:total] = m[1].to_i
+      result[:total] = m[1].to_i*1024
     end
 
     m = memory.match /MemFree:\s+(\d+) kB/
