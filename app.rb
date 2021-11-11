@@ -1,14 +1,10 @@
 # coding: utf-8
 require 'homebus'
-require 'homebus_app'
-require 'mqtt'
 require 'dotenv'
-require 'net/http'
-require 'json'
 
 require 'vmstat'
 
-class LinuxHomebusApp < HomeBusApp
+class LinuxHomebusApp < Homebus::App
   DDC = 'org.homebus.experimental.server-status'
 
   def initialize(options)
@@ -16,13 +12,19 @@ class LinuxHomebusApp < HomeBusApp
     super
   end
 
-  def update_delay
+  def update_interval
     60
   end
 
   def setup!
     Dotenv.load('.env')
     @mount_points = (ENV['MOUNT_POINTS'] || '').split(/\s/)
+
+    hostname = ENV['HOSTNAME'] || `hostname`.chomp
+    @device = Homebus::Device.new name: "Linux system status for #{hostname}",
+                                  manufacturer: 'Homebus',
+                                  model: 'Linux system status publisher',
+                                  serial_number: hostname
   end
 
   def _get_memory
@@ -106,42 +108,15 @@ class LinuxHomebusApp < HomeBusApp
     sleep update_delay
   end
 
-  def manufacturer
-    'HomeBus'
+  def name
+    'Homebus Linux system status'
   end
 
-  def model
-    'Linux system status'
-  end
-
-  def friendly_name
-    'Linux system status'
-  end
-
-  def friendly_location
-    'Portland, OR'
-  end
-
-  def serial_number
-    File.read('/etc/hostname')
-  end
-
-  def pin
-    ''
+  def publishes
+    [ DDC ]
   end
 
   def devices
-    [
-      { friendly_name: 'Linux system status',
-        friendly_location: 'Portland, OR',
-        update_frequency: update_delay,
-        index: 0,
-        accuracy: 0,
-        precision: 0,
-        wo_topics: [ DDC ],
-        ro_topics: [],
-        rw_topics: []
-      }
-    ]
+    [ @device ]
   end
 end

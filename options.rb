@@ -1,6 +1,6 @@
-require 'homebus_app_options'
+require 'homebus/options'
 
-class LinuxHomebusAppOptions < HomeBusAppOptions
+class LinuxHomebusAppOptions < Homebus::Options
   def app_options(op)
   end
 
