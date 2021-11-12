@@ -103,9 +103,9 @@ class LinuxHomebusApp < Homebus::App
       pp payload
     end
 
-    publish! DDC, payload
+    @device.publish! DDC, payload
 
-    sleep update_delay
+    sleep update_interval
   end
 
   def name
