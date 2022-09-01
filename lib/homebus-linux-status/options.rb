@@ -1,6 +1,8 @@
 require 'homebus/options'
 
-class LinuxHomebusAppOptions < Homebus::Options
+require 'homebus-linux-status/version'
+
+class HomebusLinuxStatus::Options < Homebus::Options
   def app_options(op)
   end
 
@@ -9,10 +11,10 @@ class LinuxHomebusAppOptions < Homebus::Options
   end
 
   def version
-    '0.0.1'
+    HomebusLinuxStatus::VERSION
   end
 
   def name
-    'homebus-linux'
+    'homebus-linux-status'
   end
 end

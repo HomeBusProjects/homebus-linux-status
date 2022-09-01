@@ -4,7 +4,7 @@ require 'dotenv'
 
 require 'vmstat'
 
-class LinuxHomebusApp < Homebus::App
+class HomebusLinuxStatus::App < Homebus::App
   DDC = 'org.homebus.experimental.server-status'
 
   def initialize(options)

@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'homebus-linux-status/options'
+require 'homebus-linux-status/app'
+
+options = HomebusLinuxStatus::Options.new
+app = HomebusLinuxStatus::App.new(options.options)
+app.run!
+

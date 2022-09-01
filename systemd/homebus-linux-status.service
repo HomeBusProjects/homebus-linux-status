@@ -1,0 +1,15 @@
+[Unit]
+Description=HomeBus publisher
+After=network.target
+
+[Service]
+Type=simple
+User=homebus
+WorkingDirectory=/home/homebus/homebus-linux-status
+ExecStart=/home/homebus/.rbenv/bin/rbenv exec bundle exec bin/homebus-linux-status
+TimeoutSec=30
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
