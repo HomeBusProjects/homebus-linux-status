@@ -5,3 +5,4 @@ gemspec
 gem 'dotenv'
 gem 'homebus', git: 'https://github.com/HomeBusProjects/ruby-homebus', branch: 'main'
 gem 'vmstat'
+gem 'rspec'
